@@ -2,8 +2,20 @@ sudo: required
 
 language: node_js
 
+env:
+  DOCKER_USERNAME=
+  DOCKER_PASSWORD=
+
 services:
   - docker
 
-before_install:
-  - docker build -t matt/my_node .
+jobs:
+  include:
+    - stage: build dev image
+      if: branch = dev
+      script:
+      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      - docker build -t my_node-dev .
+      - docker images 
+      - docker tag my_node-dev "$DOCKER_USERNAME"/my_node-dev 
+      - docker push $DOCKER_USERNAME/my_node-dev
