@@ -35,7 +35,8 @@ jobs:
         - docker push $DOCKER_USERNAME/my_node-qa
 
     - name: build PRODUCTION image
-      if: branch = MASTER
+      if: ((branch = qa) AND ( NOT (branch = dev) AND (branch = prod)))
+        
 
     - stage: build PROD image
       script:
