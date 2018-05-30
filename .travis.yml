@@ -3,48 +3,30 @@ sudo: required
 language: node_js
 
 env:
-  DOCKER_USERNAME=mattb912
-  DOCKER_PASSWORD=s3dd8zdCVK
+  global:
+    IMAGE_NAME=corp/my_node
+    DOCKER_USERNAME=mattb912
+    DOCKER_PASSWORD=s3dd8zdCVK
 
 services:
   - docker
 
-stages:
-  - name: build dev image
-    if: ((branch = dev) AND ( NOT (branch = qa) AND (branch = prod)))
-jobs:
-  include:
-    - stage: build dev docker image and push it to Doker Hub
-      script:
-      - if [ "$TRAVIS_BRANCH" = "dev" ]; then 
-      - echo "Running build for dev"
-      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-      - docker build -t my_node-dev .
-      - docker images 
-      - docker tag my_node-dev $DOCKER_USERNAME/my_node-dev 
-      - docker push $DOCKER_USERNAME/my_node-dev
-      - fi
+before_script:
+    - version="$(awk '$2 == "MY_APP" { print $3; exit}' Dockerfile)"
 
-    - name: build dev image
+script:
+  - docker build -t "$IMAGE_NAME" .
 
-    - stage: build QA image
-      script:
-        - if [ "$TRAVIS_BRANCH" = "qa" ]; then 
-        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        - docker build -t my_node-qa .
-        - docker images 
-        - docker tag my_node-qa $DOCKER_USERNAME/my_node-qa 
-        - docker push $DOCKER_USERNAME/my_node-qa
-        - fi
+after_script:
+  - docker images 
 
-    - name: build PRODUCTION image
-      
-    - stage: build PROD image
-      script:
-        - if [ "$TRAVIS_BRANCH" = "prod" ]; then 
-        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        - docker build -t my_node-prod .
-        - docker images 
-        - docker tag my_node-prod $DOCKER_USERNAME/my_node-prod 
-        - docker push $DOCKER_USERNAME/my_node-prod
-        - fi
+before_deploy:
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker tag my_node-dev $DOCKER_USERNAME/my_node-dev:${version}
+
+deploy:
+  provider: script
+  script: docker push $DOCKER_USERNAME/my_node-dev:${version}
+  on:
+    branch: master
+  
