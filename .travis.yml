@@ -9,14 +9,28 @@ env:
 services:
   - docker
 
+stages:
+  - name: build dev image
+    if: branch = dev
+        export image_name=my_node-DEV
 jobs:
   include:
     - stage: build dev image
-      if: branch = dev
-      export image_name=my_node-DEV
       script:
       - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
       - docker build -t $image_name .
       - docker images 
       - docker tag my_node-dev $DOCKER_USERNAME/$image_name 
       - docker push $DOCKER_USERNAME/$image_name
+
+    - name: build dev image
+      if: branch = qa
+        export image_name=my_node-QA
+
+    - stage: build QA image
+      script:
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - docker build -t $image_name .
+        - docker images 
+        - docker tag my_node-dev $DOCKER_USERNAME/$image_name 
+        - docker push $DOCKER_USERNAME/$image_name
