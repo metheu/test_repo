@@ -17,10 +17,10 @@ jobs:
     - stage: build dev image
       script:
       - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-      - docker build -t my_node-DEV .
+      - docker build -t my_node-dev .
       - docker images 
-      - docker tag my_node-dev $DOCKER_USERNAME/my_node-DEV 
-      - docker push $DOCKER_USERNAME/my_node-DEV
+      - docker tag my_node-dev $DOCKER_USERNAME/my_node-dev 
+      - docker push $DOCKER_USERNAME/my_node-dev
 
     - name: build dev image
       if: branch = qa
@@ -29,10 +29,10 @@ jobs:
     - stage: build QA image
       script:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        - docker build -t my_node-QA .
+        - docker build -t my_node-qa .
         - docker images 
-        - docker tag my_node-dev $DOCKER_USERNAME/my_node-QA 
-        - docker push $DOCKER_USERNAME/my_node-QA
+        - docker tag my_node-dev $DOCKER_USERNAME/my_node-qa 
+        - docker push $DOCKER_USERNAME/my_node-qa
 
     - name: build PRODUCTION image
       if: branch = MASTER
@@ -40,7 +40,7 @@ jobs:
     - stage: build PROD image
       script:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        - docker build -t my_node-PROD .
+        - docker build -t my_node-prod .
         - docker images 
-        - docker tag my_node-dev $DOCKER_USERNAME/my_node-PROD 
-        - docker push $DOCKER_USERNAME/my_node-PROD
+        - docker tag my_node-dev $DOCKER_USERNAME/my_node-prod 
+        - docker push $DOCKER_USERNAME/my_node-prod
