@@ -31,7 +31,7 @@ jobs:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
         - docker build -t my_node-qa .
         - docker images 
-        - docker tag my_node-dev $DOCKER_USERNAME/my_node-qa 
+        - docker tag my_node-qa $DOCKER_USERNAME/my_node-qa 
         - docker push $DOCKER_USERNAME/my_node-qa
 
     - name: build PRODUCTION image
@@ -42,5 +42,5 @@ jobs:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
         - docker build -t my_node-prod .
         - docker images 
-        - docker tag my_node-dev $DOCKER_USERNAME/my_node-prod 
+        - docker tag my_node-prod $DOCKER_USERNAME/my_node-prod 
         - docker push $DOCKER_USERNAME/my_node-prod
