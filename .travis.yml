@@ -28,5 +28,13 @@ deploy:
   provider: script
   script: docker push $DOCKER_USERNAME/my_node-dev:${version}
   on:
-    branch: master
+    branches:
+    only:
+      - dev
+      - qa 
+      - master
+  
+  notifications:
+    email:
+      - mattb.912@gmail.com
   
