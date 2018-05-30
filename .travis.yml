@@ -11,36 +11,40 @@ services:
 
 stages:
   - name: build dev image
-    if: branch = dev
+    if: ((branch = dev) AND ( NOT (branch = qa) AND (branch = prod)))
 jobs:
   include:
-    - stage: build dev image
+    - stage: build dev docker image and push it to Doker Hub
       script:
+      - if [ "$TRAVIS_BRANCH" = "dev" ]; then 
+      - echo "Running build for dev"
       - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-      - docker build -t my_node-DEV .
+      - docker build -t my_node-dev .
       - docker images 
-      - docker tag my_node-dev $DOCKER_USERNAME/my_node-DEV 
-      - docker push $DOCKER_USERNAME/my_node-DEV
+      - docker tag my_node-dev $DOCKER_USERNAME/my_node-dev 
+      - docker push $DOCKER_USERNAME/my_node-dev
+      - fi
 
     - name: build dev image
-      if: branch = qa
-        
 
     - stage: build QA image
       script:
+        - if [ "$TRAVIS_BRANCH" = "qa" ]; then 
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        - docker build -t my_node-QA .
+        - docker build -t my_node-qa .
         - docker images 
-        - docker tag my_node-dev $DOCKER_USERNAME/my_node-QA 
-        - docker push $DOCKER_USERNAME/my_node-QA
+        - docker tag my_node-qa $DOCKER_USERNAME/my_node-qa 
+        - docker push $DOCKER_USERNAME/my_node-qa
+        - fi
 
     - name: build PRODUCTION image
-      if: branch = MASTER
-
+      
     - stage: build PROD image
       script:
+        - if [ "$TRAVIS_BRANCH" = "prod" ]; then 
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        - docker build -t my_node-PROD .
+        - docker build -t my_node-prod .
         - docker images 
-        - docker tag my_node-dev $DOCKER_USERNAME/my_node-PROD 
-        - docker push $DOCKER_USERNAME/my_node-PROD
+        - docker tag my_node-prod $DOCKER_USERNAME/my_node-prod 
+        - docker push $DOCKER_USERNAME/my_node-prod
+        - fi
