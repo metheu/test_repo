@@ -11,7 +11,7 @@ services:
 
 stages:
   - name: build dev image
-    if: (branch = dev)
+    if: ((branch = dev) AND ( NOT (branch = qa) AND (branch = prod)))
 jobs:
   include:
     - stage: build dev docker image
@@ -25,7 +25,7 @@ jobs:
       - docker push $DOCKER_USERNAME/my_node-dev
 
     - name: build dev image
-      if: branch = qa
+      if: (branch = qa)
         
 
     - stage: build QA image
