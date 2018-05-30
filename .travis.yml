@@ -14,18 +14,16 @@ stages:
     if: ((branch = dev) AND ( NOT (branch = qa) AND (branch = prod)))
 jobs:
   include:
-    - stage: build dev docker image
+    - stage: build dev docker image and push it to Doker Hub
       script:
       - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
       - docker build -t my_node-dev .
-    - stage: Push dev docker image to hub
-      script:
       - docker images 
       - docker tag my_node-dev $DOCKER_USERNAME/my_node-dev 
       - docker push $DOCKER_USERNAME/my_node-dev
 
     - name: build dev image
-      if: (branch = qa)
+      if: ((branch = qa) AND ( NOT (branch = dev) AND (branch = prod)))
         
 
     - stage: build QA image
