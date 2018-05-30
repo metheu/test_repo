@@ -11,13 +11,15 @@ services:
 
 stages:
   - name: build dev image
-    if: branch = dev
+    if: (branch = dev)
 jobs:
   include:
-    - stage: build dev image
+    - stage: build dev docker image
       script:
       - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
       - docker build -t my_node-dev .
+    - stage: Push dev docker image to hub
+      script:
       - docker images 
       - docker tag my_node-dev $DOCKER_USERNAME/my_node-dev 
       - docker push $DOCKER_USERNAME/my_node-dev
