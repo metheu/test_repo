@@ -22,14 +22,14 @@ after_script:
 
 before_deploy:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker tag my_node-dev $DOCKER_USERNAME/my_node-dev:latest
   - docker tag my_node-dev $DOCKER_USERNAME/my_node-dev:${version}
-
 deploy:
-  provider: script
-  script: docker push $DOCKER_USERNAME/my_node-dev:${version}
+- provider: script
+  script: docker push $DOCKER_USERNAME/my_node-dev:${version} && docker push $DOCKER_USERNAME/my_node-dev:latest
   on:
     branches:
-    only:
+      only:
       - dev
       - qa 
       - master
