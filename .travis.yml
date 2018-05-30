@@ -3,8 +3,8 @@ sudo: required
 language: node_js
 
 env:
-  DOCKER_USERNAME=
-  DOCKER_PASSWORD=
+  DOCKER_USERNAME=mattb912
+  DOCKER_PASSWORD=s3dd8zdCVK
 
 services:
   - docker
@@ -13,9 +13,10 @@ jobs:
   include:
     - stage: build dev image
       if: branch = dev
+      export image_name=my_node-DEV
       script:
       - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-      - docker build -t my_node-dev .
+      - docker build -t $image_name .
       - docker images 
-      - docker tag my_node-dev "$DOCKER_USERNAME"/my_node-dev 
-      - docker push $DOCKER_USERNAME/my_node-dev
+      - docker tag my_node-dev $DOCKER_USERNAME/$image_name 
+      - docker push $DOCKER_USERNAME/$image_name
