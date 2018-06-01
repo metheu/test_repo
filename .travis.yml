@@ -4,7 +4,7 @@ language: node_js
 
 env:
   global:
-    IMAGE_NAME=corp/my_node
+    IMAGE_NAME=my_node
     DOCKER_USERNAME=mattb912
     DOCKER_PASSWORD=s3dd8zdCVK
 
@@ -13,6 +13,9 @@ services:
 
 before_script:
     - version="$(awk '$2 == "MY_APP" { print $3; exit}' Dockerfile)"
+    - export BRANCH=$(if [ ${TRAVIS_PULL_REQUEST} = "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
+    - echo "TRAVIS_BRANCH=$TRAVIS_BRANCH, PR=$PR, BRANCH=$BRANCH"
+
 
 script:
   - docker build -t "$IMAGE_NAME" .
@@ -22,19 +25,15 @@ after_script:
 
 before_deploy:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  - docker tag my_node-dev $DOCKER_USERNAME/my_node-dev:latest
-  - docker tag my_node-dev $DOCKER_USERNAME/my_node-dev:${version}
+  - docker tag my_node $DOCKER_USERNAME/my_node-${BRANCH}:latest
+  - docker tag my_node $DOCKER_USERNAME/my_node-${BRANCH}:${version}
 deploy:
 - provider: script
-  script: docker push $DOCKER_USERNAME/my_node-dev:${version} && docker push $DOCKER_USERNAME/my_node-dev:latest
-  on:
-    branches:
-      only:
-      - dev
-      - qa 
-      - master
+  script: docker push $DOCKER_USERNAME/my_node-${BRANCH}:${version} && docker push $DOCKER_USERNAME/my_node-${BRANCH}:latest
+on:
+  all_branches= true
   
-  notifications:
+notifications:
     email:
       - mattb.912@gmail.com
   
