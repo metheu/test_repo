@@ -24,6 +24,9 @@ script:
   - docker tag my_node $DOCKER_USERNAME/my_node-${BRANCH}:latest
   - docker tag my_node $DOCKER_USERNAME/my_node-${BRANCH}:${version}
 
+after_success:
+  - docker push $DOCKER_USERNAME/my_node-${BRANCH}:${version} && docker push $DOCKER_USERNAME/my_node-${BRANCH}:latest
+
 deploy:
   
     provider: script
