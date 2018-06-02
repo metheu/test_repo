@@ -27,12 +27,16 @@ before_deploy:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker tag my_node $DOCKER_USERNAME/my_node-${BRANCH}:latest
   - docker tag my_node $DOCKER_USERNAME/my_node-${BRANCH}:${version}
+
 deploy:
-- provider: script
+  provider: script
   script: docker push $DOCKER_USERNAME/my_node-${BRANCH}:${version} && docker push $DOCKER_USERNAME/my_node-${BRANCH}:latest
-on:
-  all_branches= true
-  
+  on:
+    branch:
+      dev
+      qa
+      master
+
 notifications:
     email:
       - mattb.912@gmail.com
