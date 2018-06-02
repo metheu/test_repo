@@ -20,12 +20,15 @@ before_script:
 script:
   - docker build -t "$IMAGE_NAME" .
   - docker images 
+
+after_script:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker tag my_node $DOCKER_USERNAME/my_node-${BRANCH}:latest
   - docker tag my_node $DOCKER_USERNAME/my_node-${BRANCH}:${version}
+  - docker images
 
-after_success:
-  - docker push $DOCKER_USERNAME/my_node-${BRANCH}:${version} && docker push $DOCKER_USERNAME/my_node-${BRANCH}:latest
+after_failure:
+  - echo "script failed!"
 
 deploy:
   
@@ -38,7 +41,5 @@ deploy:
         qa
         master
 
-notifications:
-    email:
-      - mattb.912@gmail.com
+
   
