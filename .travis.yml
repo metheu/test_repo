@@ -13,8 +13,8 @@ services:
 
 before_script:
     - version="$(awk '$2 == "MY_APP" { print $3; exit}' Dockerfile)"
-    - export BRANCH=$(if [ ${TRAVIS_PULL_REQUEST} = "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
-    - echo "TRAVIS_BRANCH=$TRAVIS_BRANCH, PR=$PR, BRANCH=$BRANCH"
+    - export $BRANCH=$TRAVIS_BRANCH
+    - echo "TRAVIS_BRANCH=$TRAVIS_BRANCH"
 
 
 script:
