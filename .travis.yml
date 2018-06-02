@@ -25,13 +25,15 @@ script:
   - docker tag my_node $DOCKER_USERNAME/my_node-${BRANCH}:${version}
 
 deploy:
-  provider: script
-  script: docker push $DOCKER_USERNAME/my_node-${BRANCH}:${version} && docker push $DOCKER_USERNAME/my_node-${BRANCH}:latest
-  on:
-    branch:
-      dev
-      qa
-      master
+  
+    provider: script
+    script: docker push $DOCKER_USERNAME/my_node-${BRANCH}:${version} && docker push $DOCKER_USERNAME/my_node-${BRANCH}:latest
+    skip_cleanup: true
+    on:
+      branch:
+        dev
+        qa
+        master
 
 notifications:
     email:
