@@ -14,16 +14,12 @@ services:
 before_script:
     - version="$(awk '$2 == "MY_APP" { print $3; exit}' Dockerfile)"
     - BRANCH=$TRAVIS_BRANCH
-    - echo "TRAVIS_BRANCH=$TRAVIS_BRANCH"
+    - echo "${BRANCH}"
 
 
 script:
   - docker build -t "$IMAGE_NAME" .
-
-after_script:
   - docker images 
-
-before_deploy:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker tag my_node $DOCKER_USERNAME/my_node-${BRANCH}:latest
   - docker tag my_node $DOCKER_USERNAME/my_node-${BRANCH}:${version}
