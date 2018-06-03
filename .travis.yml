@@ -1,0 +1,18 @@
+sudo: required
+
+language: node_js
+
+
+services:
+  - docker
+
+before_script:
+    - version="$(awk '$2 == "MY_APP" { print $3; exit}' Dockerfile)"
+    - BRANCH=$TRAVIS_BRANCH
+    - echo "${BRANCH}"
+
+script:
+    - bash build_image.sh ${BRANCH}
+
+
+  
