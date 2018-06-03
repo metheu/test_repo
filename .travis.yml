@@ -25,10 +25,11 @@ after_install:
   - docker tag my_node $DOCKER_USERNAME/my_node-${BRANCH}:${version}
 
 before_script:
-   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-   
+  - docker images
+
 script:
-    - docker push $DOCKER_USERNAME/my_node-${BRANCH}:${version} && docker push $DOCKER_USERNAME/my_node-${BRANCH}:latest
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker push $DOCKER_USERNAME/my_node-${BRANCH}:${version} && docker push $DOCKER_USERNAME/my_node-${BRANCH}:latest
 
 
 
