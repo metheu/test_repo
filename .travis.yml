@@ -2,35 +2,17 @@ sudo: required
 
 language: node_js
 
-env:
-  global:
-    IMAGE_NAME=my_node
-    DOCKER_USERNAME=mattb912
-    DOCKER_PASSWORD=s3dd8zdCVK
 
 services:
   - docker
 
-before_install:
+before_script:
     - version="$(awk '$2 == "MY_APP" { print $3; exit}' Dockerfile)"
     - BRANCH=$TRAVIS_BRANCH
     - echo "${BRANCH}"
 
-
-install:
-  - docker build -t "$IMAGE_NAME" .
-
-after_install:
-  - docker tag my_node $DOCKER_USERNAME/my_node-${BRANCH}:latest
-  - docker tag my_node $DOCKER_USERNAME/my_node-${BRANCH}:${version}
-
-before_script:
-  - docker images
-
 script:
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  - docker push $DOCKER_USERNAME/my_node-${BRANCH}:${version} && docker push $DOCKER_USERNAME/my_node-${BRANCH}:latest
-
+    - bash build_image.sh ${BRANCH}
 
 
   
