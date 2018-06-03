@@ -19,19 +19,14 @@ before_script:
 
 script:
   - docker build -t "$IMAGE_NAME" .
-  - docker images 
 
 after_script:
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker tag my_node $DOCKER_USERNAME/my_node-${BRANCH}:latest
   - docker tag my_node $DOCKER_USERNAME/my_node-${BRANCH}:${version}
-  - docker images
 
-after_failure:
-  - echo "script failed!"
-
+before_deploy:
+   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 deploy:
-  
     provider: script
     script: docker push $DOCKER_USERNAME/my_node-${BRANCH}:${version} && docker push $DOCKER_USERNAME/my_node-${BRANCH}:latest
     skip_cleanup: true
