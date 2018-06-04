@@ -1,4 +1,4 @@
-FROM node:carbon
+FROM node:9-alpine
 
 ENV MY_APP 0.0.1
 
