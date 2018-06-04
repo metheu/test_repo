@@ -32,6 +32,17 @@ app.listen(3000, function(){
         });
     });
 
+    // app.get('/quotes', function(req, res){
+    //     // res.sendFile(__dirname + '/html/index.html');
+ 
+    //      db.collection('quotes').find().toArray(function (err, results){
+    //          if(err){
+    //              return console.log(err);
+    //          }  
+    //              // render index.ejs
+    //              res.render('index.ejs', {quotes:results});
+    //      });
+    //  });
     
 
     app.post('/quotes', function(req, res){

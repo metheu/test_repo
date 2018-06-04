@@ -24,7 +24,8 @@ case $branch in
         echo "branch is qa.."
         ;;
     master)
-        echo "branch is master.."
+        echo "branch is master..build with release tag"
+        branch=release
         ;;
     *)
         echo "undefined.."
