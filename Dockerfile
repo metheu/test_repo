@@ -1,6 +1,6 @@
 FROM node:9-alpine
 
-ENV MY_APP 0.0.1
+ENV MY_APP 0.0.2
 
 WORKDIR ~/git/my_node/app/
 
