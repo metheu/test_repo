@@ -1,20 +1,21 @@
 {
-  "name": "my_node",
-  "version": "1.0.0",
-  "description": "my test node.js on docker",
-  "main": "server.js",
+  "name": "my-node",
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
-    "start": "node src/server.js",
-    "_comment" :"test : echo \"Error: no test specified\" && exit 1" 
+    "start": "node ./bin/www"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.3",
     "bootstrap": "^4.1.1",
-    "ejs": "^2.6.1",
-    "express": "^4.16.3",
-    "mongodb": "^3.1.0-beta4"
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "ejs": "~2.5.7",
+    "express": "~4.16.0",
+    "http-errors": "~1.6.2",
+    "mongodb": "^3.1.0-beta4",
+    "morgan": "~1.9.0",
+    "serve-favicon": "^2.5.0"
   },
   "devDependencies": {
     "eslint-config-standard": "^11.0.0",
