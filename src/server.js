@@ -54,7 +54,7 @@ app.listen(3000, function(){
             console.log('saved to db');
 
             res.redirect('/');
-        })
+        });
     });
 });
 
