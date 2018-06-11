@@ -14,5 +14,8 @@ before_script:
 script:
     - if [ $TRAVIS_BRANCH == "dev" || $TRAVIS_BRANCH == "qa" || $TRAVIS_BRANCH == "master"  ]; then bash build_image.sh ${BRANCH}; fi
 
+notifications:
+    slack: mattgroup-workspace:Ibymbc5Lvz613oXoNyBGZGwC
+
 
   
